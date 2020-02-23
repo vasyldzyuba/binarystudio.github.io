@@ -1,0 +1,115 @@
+<!--Edit recipe modal-->
+<div class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	id="editModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="recName">Recipe name</label>
+					<input type="text" ng-model='todo.editTodoText' class="form-control" id="recName"><br>
+					<label for="recDesc">Recipe description</label>
+					<textarea name="" id="" ng-model='todo.editRecipeDescription' id="recDesc" class="form-control"
+						rows="4"></textarea>
+				</div>
+				<input type="button" value="Change" class="btn btn-success" ng-click='todo.saveTodo()' id="saveHuman"
+					data-toggle="modal" data-target="#editModal">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Add new recipe modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Add new task</h5>
+				<button type="button" data-dismiss="modal" class="close" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="input-group input-group-lg">
+					<input type="text" ng-model='todo.newRecipe' placeholder="New todo" id="inpText"
+						class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+				</div>
+				<div class="input-group input-group-lg">
+					<input type="text" ng-model='todo.newDescription' placeholder="New description" class="form-control"
+						aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" ng-disabled='todo.newRecipe.length == 0' id="btnAdd" ng-click='todo.btnAdd()'
+					data-dismiss="modal" class="btn btn-secondary btn-lg btn-block">Add New
+					Task</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- buttons container -->
+<div class="btnObg">
+	<div class="btnCont">
+		<button type="button" class="btn btn-info btn-lg btn-block" data-toggle="modal"
+			data-target="#exampleModalCenter" id="addTaskbtn">
+			Add new recipe
+		</button>
+		<button type="button" id="btnSendTo" ng-click='todo.getDataToShare(new)'
+			class="btn btn-info btn-lg btn-block" data-toggle="modal" data-target="#sendToModal">Show all
+			previous
+			recipies</button>
+	</div>
+</div>
+
+<!-- main recipies table -->
+<div class="table-responsive col-lg-12">
+	<table class="table table-bordered table-hover" ng-hide="!todo.recipies.length">
+		<thead>
+			<tr>
+				<th>Recipe Name</th>
+				<th>Description</th>
+				<th class="date">Date <span><button ng-click='todo.sortBy("date")' ng-hide="todo.recipies.length <= 1" class="btn btn-light btn-sm"
+					type="button">Sort</button></span></th>
+				<th>Edit</th>
+				<th>Remove</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="new in todo.recipies | orderBy: todo.propertyName: todo.reverse">
+				<td class="break">{{new.recipe }}</td>
+				<td class="break">{{new.description}}</td>
+				<td>{{new.date}}</td>
+				<td><button type="button" id="btnEdit" ng-click='todo.btnEdit(new)' class="btn btn-warning btn-sm"
+						data-toggle="modal" data-target="#editModal">Edit</button></td>
+				<td><button type="button" id="btnRemove" ng-click='todo.removeItem(new.id)'
+						class="btn btn-danger btn-sm">Remove</button></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- previous recipe versions modal -->
+<span class="emptyTodo" ng-hide="todo.recipies.length">No recipies yet <br>Add a recipe to get started</span>
+<div class="modal fade bd-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	id="sendToModal">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<table class="table-bordered" ng-hide="!todo.prevVersions.length">
+				<thead>
+					<th>Previous Recipe Name</th>
+					<th>Previous Recipe Description</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="new in todo.prevVersions">
+						<td>{{new.prevRecipeName}}</td>
+						<td>{{new.prevDescription}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<span class="emptyTodo2" ng-hide="todo.prevVersions.length">No previous recipies yet <br>Edit a recipe to
+				get started</span>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn btn-success btn-lg btn-block">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
